@@ -1,0 +1,33 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.p_image {
+	float: left;
+	padding: 20px 20px;
+}
+
+.p_name {
+	text-transform: uppercase;
+	font-weight: bold;
+	padding-top: 30px;
+	font-size: 14px;
+}
+
+.p_style, 
+.p_selected_colour {
+	font-size: 13px;
+	text-transform: capitalize;
+}
+.style {
+	text-transform: uppercase;
+}
+
+.options {
+	margin-top: 50px;
+}
+.options li {
+	display: inline-block;
+	font-size: 12px;
+}
