@@ -6,33 +6,30 @@
 
 	$.Shop.prototype = {
 		init: function () {		
-
-			//cart Initialization
-			$.get('js/cart.json', function(data) {
-				$("#my_cart").html(Mustache.render( $("#my_cart_template").html(), data));
-			});
-
-			console.log(this._JSONtoObject());
-		},
-
-		_JSONtoObject: function () {
-			$.ajax({
-				'async' : true,
-				'global' : false,
-				'url' : 'js/cart.json',
-				'dataType' : "json",
-				'success' : function (data) {
-					json = data;
-				}
+			this.loadCartItems(function(response){
+				var context = JSON.parse(response);
+				var source = $("#my-cart-template").html();
+				var template = Handlebars.compile(source);
+				$("#my-cart").append(template(context));
 			});
 			
 		},
 
+		loadCartItems: function(callback) {
+			var url = "js/cart.json";
+			var http_request = new XMLHttpRequest();
+			
 
-		
+			http_request.onreadystatechange = function () {
+				if (http_request.readyState == 4) {
+					callback(http_request.responseText);
+					}	
+			}
+
+			http_request.open("GET", url, true);
+			http_request.send();
+		}
 	}
-
-
 
 	$(function () {
 		var shop = new $.Shop ("#my_cart")	

@@ -18,7 +18,7 @@
 .p_style, 
 .p_selected_colour {
 	font-size: 13px;
-	text-transform: capitalize;
+	/*text-transform: capitalize;*/
 }
 .style {
 	text-transform: uppercase;
