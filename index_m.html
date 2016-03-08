@@ -36,15 +36,15 @@
 		<div id="my-cart">
 			<script id="my-cart-template" type="text/x-handlebars-template">
 			{{#each productsInCart}}
-				<div class="row product_{{p_id}}">
-					<div class="col-sm-9">
+				<div class="row">
+					<div class="col-sm-9" id="{{p_id}}">
 						<img src="images/{{p_id}}.jpg" class="p_image">
 						<div class="p_name">{{p_variation}} {{p_name}}</div>
 						<div class="p_style">Style #: {{uppercase p_style}}</div>
 						<div class="p_selected_colour">Colour: {{uppercase p_selected_color.name}}</div>
 						<ul class="options">
-							<li><button name="edit">EDIT</button></li> |
-							<li>REMOVE</li> |
+							<li id="edit">EDIT</li> |
+							<li id="remove">REMOVE</li> |
 							<li>SAVE FOR LATER</li>
 						</ul>
 						
@@ -81,8 +81,8 @@
 			<section>
 				<div class="row promo">
 					<div class="col-sm-4"><p>ENTER PROMOTIONAL OR GIFT CODE</p></div>
-					<div class="col-sm-6"><input type="text" name="promocode"></input></div>
-					<div class="col-sm-2"><button name="apply" value="apply">APPLY</button></div>
+					<div class="col-sm-6"><input id="promocode" type="text" name="promocode"></input></div>
+					<div class="col-sm-2"><button id="apply" name="apply" value="apply">APPLY</button></div>
 				</div>
 				<hr class="dbl-line" />
 				<div class="row subtotal">
@@ -95,7 +95,7 @@
 				</div>
 				<div class="row promo_applied">
 					<div class="col-sm-8"><p>PROMOTION CODE <span></span> APPLIED</p></div>
-					<div class="col-sm-4 promo_applied_amount"></div>
+					<div class="col-sm-4 promo_applied_amount">None</div>
 				</div>
 
 				<div class="row shipping">
@@ -118,9 +118,9 @@
 
 	<!-- Modal Example -->
 	
-	<div id="overlay">
+	<!-- <div id="overlay">
 		
-	</div>
+	</div> -->
 
 
 
@@ -144,7 +144,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
 	<script src="js/bootstrap.js"></script>
-	<script src="js/script.js"></script>
+	<script src="js/shoppingCart.js"></script>
+	<script src="js/script_m.js"></script>
 	<script src="js/custom_handles.js"></script>
 	<!-- <script src="js/ajax_script.js"></script> -->
 	

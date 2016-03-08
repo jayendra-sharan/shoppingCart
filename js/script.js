@@ -6,7 +6,7 @@
 
 	$.Shop.prototype = {
 		init: function () {		
-			this.loadCartItems(function(response){
+				this.loadCartItems(function(response){
 				var context = JSON.parse(response);
 				var source = $("#my-cart-template").html();
 				var template = Handlebars.compile(source);
@@ -86,4 +86,7 @@
 
 })(jQuery);
 
+var Modal = function() {
+	
+}
  
