@@ -87,7 +87,7 @@ var ShoppingCart = (function($) {
 		}
 	}
 
-	function loadCart() {
+	function reloadCart() {
 		var cart = sessionStorage.getItem('cartItems');
 		var prdcts = JSON.parse(cart);
 		loadCart(prdcts);
@@ -95,8 +95,8 @@ var ShoppingCart = (function($) {
 
 	function init() {
 					// getCartItems();
-		// var loadItems = sessionStorage.getItem('load');
-		// if(loadItems == null) {
+		var loadItems = sessionStorage.getItem('load');
+		if(loadItems == null) {
 			 $.when($.ajax({
 				'url' : 'js/cart.json',
 				'method' : 'POST',
@@ -105,12 +105,12 @@ var ShoppingCart = (function($) {
 					sessionStorage.setItem('cartItems', JSON.stringify(data));
 				}
 			})).done(function(){
-				loadCart();	
+				reloadCart();	
 				sessionStorage.setItem('load', true);
 			});
-		// }else{
-			// loadCart();
-		// }
+		}else{
+			reloadCart();
+		}
 		
 		
 		
