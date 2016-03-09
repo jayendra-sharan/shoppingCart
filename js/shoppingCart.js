@@ -1,43 +1,43 @@
 var ShoppingCart = (function($) {
 
-	var cartItems;
+	// XHR to load the JSON then store it into locastorage
 
-	function getCartItems() {
-		var jsonObj;
-		$.ajax({
-				'method' : 'POST',
-				'url' : 'js/cart.json',
-				'dataType' : "json",
-				'success' : function (data) {
-					// console.log(data);
-					// return data;
-					jsonObj = data;
-				}
-			});
-		$(document).ajaxComplete(function() {
-			console.log("h");
-			console.log(jsonObj);
-			
-		});
+	// function getCartItems() {
+	// 	$.ajax({
+	// 		'url' : 'js/cart.json',
+	// 		'method' : 'POST',
+	// 		'dataType' : 'json',
+	// 		'success' : function(data){
+	// 			sessionStorage.setItem('cartItems', JSON.stringify(data));
+	// 		}
+	// 	});
+	// }
+	
+	function loadCart(products){
+		var source = $("#my-cart-template").html();
+		var template = Handlebars.compile(source);
+		$("#my-cart").append(template(products));
+
+		//calculation part goes here
+
+		var subTotalAmount = calculateSubTotal(products);
+		var discountAmount = subTotalAmount * calculateDiscount(products);
+		var pcv = calculatePromoCode();
+		var promoCodeValue = isNaN(pcv) ? 0 : pcv;
+		var sa = calculateShipping();
+		var shippingAmount = isNaN(sa) ? 0: sa;
+
+		var estimatedTotal = subTotalAmount - discountAmount - promoCodeValue + shippingAmount;
+
+
+		//display calculated values here
+		$(".count").html(products.productsInCart.length);
+		$(".subtotal_amount").html(displayCurrency(subTotalAmount));
+		$("._discount_amount").html('-'+displayCurrency(discountAmount));
+		// $(".promo_applied_amount").html(displayCurrency(pcv));
+		$(".shipping_amount").html(displayCurrency(sa));
+		$(".estimated_total_amount").html(displayCurrency(estimatedTotal));
 	}
-	/*
-	function loadCart(callback) {
-		var url = "js/cart.json";
-		var http_request = new XMLHttpRequest();
-		
-
-		http_request.onreadystatechange = function () {
-			if (http_request.readyState == 4) {
-					this.cartItems = http_request.responseText;
-					callback(http_request.responseText);
-				}	
-		}
-		http_request.open("GET", url, true);
-		http_request.send();
-
-		
-	}
-	*/
 
 	function calculateSubTotal(obj) {
 		var sum=0;
@@ -87,67 +87,51 @@ var ShoppingCart = (function($) {
 		}
 	}
 
-
-	/*
-	*	initialization function, loads the cart items and
-	*	calculates the cart value along considering the 
-	*	promotional code applied, shipping charge and other
-	*	discounts.
-	*/
-	/*
-	function init() {
-
-			loadCart(){
-
-			}
-
-			loadCart(function(response){
-
-			var context = JSON.parse(response);
-			var source = $("#my-cart-template").html();
-			var template = Handlebars.compile(source);
-			$("#my-cart").append(template(context));
-
-			//calculation part goes here
-
-			var subTotalAmount = calculateSubTotal(context);
-			var discountAmount = subTotalAmount * calculateDiscount(context);
-			var pcv = calculatePromoCode();
-			var promoCodeValue = isNaN(pcv) ? 0 : pcv;
-			var sa = calculateShipping();
-			var shippingAmount = isNaN(sa) ? 0: sa;
-
-			var estimatedTotal = subTotalAmount - discountAmount - promoCodeValue + shippingAmount;
-
-
-			//display calculated values here
-			$(".count").html(context.productsInCart.length);
-			$(".subtotal_amount").html(displayCurrency(subTotalAmount));
-			$("._discount_amount").html('-'+displayCurrency(discountAmount));
-			// $(".promo_applied_amount").html(displayCurrency(pcv));
-			$(".shipping_amount").html(displayCurrency(sa));
-			$(".estimated_total_amount").html(displayCurrency(estimatedTotal));
-		});
-
-	} */
-	function init() {
-		this.cartItems = getCartItems();
-		console.log("hello"+this.cartItems);
+	function loadCart() {
+		var cart = sessionStorage.getItem('cartItems');
+		var prdcts = JSON.parse(cart);
+		loadCart(prdcts);
 	}
+
+	function init() {
+					// getCartItems();
+		// var loadItems = sessionStorage.getItem('load');
+		// if(loadItems == null) {
+			 $.when($.ajax({
+				'url' : 'js/cart.json',
+				'method' : 'POST',
+				'dataType' : 'json',
+				'success' : function(data){
+					sessionStorage.setItem('cartItems', JSON.stringify(data));
+				}
+			})).done(function(){
+				loadCart();	
+				sessionStorage.setItem('load', true);
+			});
+		// }else{
+			// loadCart();
+		// }
+		
+		
+		
+		
+		
+	}
+
 	function removeItem(item) {
-		loadCart(function(response){
-			var context = JSON.parse(response);
-			var products = context.productsInCart;
-			for (var i = 0; i < products.length; i++) {
-					if (products[i].p_id == item) {
-						console.log("match");
-						delete products[i];
-						// init();
-						// console.log(context);
-						return;
-					}
-			}
-		});
+		var cart = sessionStorage.getItem('cartItems');
+		var prdcts = JSON.parse(cart);
+		for (var i = 0; i < prdcts.productsInCart.length; i++) {
+			if (prdcts.productsInCart[i].p_id == item) {
+				console.log("match");
+				prdcts.productsInCart.splice(i, 1);
+				sessionStorage.setItem('cartItems', JSON.stringify(prdcts));
+				window.location.reload();
+				return;
+			}	
+			
+		}
+		// console.log(prdcts.productsInCart[item-1]);
 	}
 
 	return {

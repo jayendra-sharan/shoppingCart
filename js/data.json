@@ -1,8 +1,0 @@
-{ 
-  "productsInCart": [
-    { "id": 1, "fname": "Tony", "lname": "Stark", "member" : false }, 
-    { "id": 2, "fname": "Clark", "lname": "Kent", "member" : true },
-    { "id": 3, "fname": "Peter", "lname": "Parker", "member" : true },
-    { "id": 4, "fname": "James", "lname": "Kirk", "member" : false } 
-  ] 
-}
