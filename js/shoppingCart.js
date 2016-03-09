@@ -31,7 +31,7 @@ var ShoppingCart = (function($) {
 
 
 		//display calculated values here
-		$(".count").html(products.productsInCart.length);
+		$("#count").html(products.productsInCart.length);
 		$(".subtotal_amount").html(displayCurrency(subTotalAmount));
 		$("._discount_amount").html('-'+displayCurrency(discountAmount));
 		// $(".promo_applied_amount").html(displayCurrency(pcv));
@@ -83,7 +83,8 @@ var ShoppingCart = (function($) {
 		if(isNaN(cur)) {
 			return cur;
 		}else {
-			return '<span class="dollar_sign">$</span>'+('0'+cur.toFixed(2)).slice(-5);
+			// return '<span class="dollar_sign">$</span>'+('0'+cur.toFixed(2)).slice(-5);
+			return cur;
 		}
 	}
 
@@ -131,13 +132,47 @@ var ShoppingCart = (function($) {
 			}	
 			
 		}
-		// console.log(prdcts.productsInCart[item-1]);
+		
 	}
+
+	
+
+	function editItem(item) {
+		OverlayModule.enableOverlay();
+		var cart = sessionStorage.getItem('cartItems');
+		var prdcts = JSON.parse(cart);
+		for (var i = 0; i < prdcts.productsInCart.length; i++) {
+			if (prdcts.productsInCart[i].p_id == item) {
+				var div = document.getElementById("product_image");
+				div.src = "images/"+item+".jpg";
+					// console.log(prdcts.productsInCart[i].p_available_options.colors[2]);
+					// prdcts.productsInCart[i].p_selected_color = {"name":"green", "hexcode":"#A3D2A1"};
+					// var editedItem = prdcts.productsInCart[i];
+					// prdcts.productsInCart.splice(i, 1, editedItem);
+					// sessionStorage.setItem('cartItems', JSON.stringify(prdcts));
+					// // window.location.reload();
+					return;
+				}	
+	}	}
 
 	return {
 		init : init,
-		removeItem: removeItem
+		removeItem: removeItem,
+		editItem : editItem
 		
 	};
 
 })(jQuery);
+
+var OverlayModule = (function() {
+	function enableOverlay() {
+		var el = document.getElementById("overlay");
+		var ed = document.getElementById("editProduct");
+		el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+		ed.style.display = (ed.style.display == "block") ? "none" : "block";
+	}
+
+	return {
+		enableOverlay: enableOverlay
+	};
+})();

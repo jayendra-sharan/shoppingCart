@@ -13,6 +13,9 @@ Handlebars.registerHelper('strikethrough', function(str) {
   return new Handlebars.SafeString ("<p class='discount'>" + str + "</p>");
 });
 
+// Handlebars.registerHelper('currency', function(str) {
+//   return new Handlebars.SafeString('<span class="dollar_sign">$</span>'+(('0' + str.toFixed(2)).slice(-5)).toString());
+// });
 Handlebars.registerHelper('currency', function(str) {
-  return new Handlebars.SafeString('<span class="dollar_sign">$</span>'+(('0' + str.toFixed(2)).slice(-5)).toString());});
-
+	return (('0' + str.toFixed(2)).slice(-5)).toString();
+});

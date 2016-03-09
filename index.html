@@ -6,38 +6,66 @@
   <meta name="author" content="Jayendra">
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
-
 	<title>My Cart</title>
 </head>
 <body>
-	<div id="entry">
-	<script id="entry-template" type="text/x-handlebars-template">
-  		
-    		<h1>{{title}}</h1>
-    		<div class="body">
-      			{{body}}
-    		</div>
-  		
-	</script>
-	</div>
 	<header class="masthead">
-		<h1>Your Shopping Bag</h1>
-	</header>
-	<div class="container-fluid">
-		
-		<hr class="sngl-line">
-		<div class="row header">
-			<div class="col-sm-9"><span class="count"></span> Items</div>
+		<span class="heading"><h1>Your Shopping Bag</h1></span>
+		<span class="sngl-line"></span>
+		<div class="row custom-row product_header">
+			<div class="col-sm-9 col-xs-12 count-items"><span id="count"></span> Items</div>
 			<div class="col-sm-1">Size</div>
 			<div class="col-sm-1">Qty</div>
 			<div class="col-sm-1">Price</div>
 		</div>
-		<hr class="dbl-line">
+	</header>
+	
+	<span class="dbl-line"></span>
+
+	<div class="page">
 		<div id="my-cart">
 			<script id="my-cart-template" type="text/x-handlebars-template">
 			{{#each productsInCart}}
-				<div class="row">
-					<div class="col-sm-9" id="{{p_id}}">
+				<div class="product" id="{{p_id}}">
+					<img class="product_image" src="images/{{p_id}}.jpg">
+					<div id="product_detail">
+						<div class="row custom-row" id="detail_{{p_id}}">
+							<div class="col-sm-6" class="product_desc">
+								<ul class="description">
+									<li class="name">{{p_variation}} {{p_name}}</li>
+									<li class="style">Style #: {{uppercase p_style}}</li>
+									<li class="color">Colour: {{p_selected_color.name}}</li>
+								</ul>
+							</div>
+							<div class="col-sm-2 product_size">
+								<span class="size">Size: </span>{{uppercase p_selected_size.code}}
+							</div>
+							<div class="col-sm-2 product_qty">
+								<span class="qty">QTY: </span><input type="text" value="{{p_quantity}}" name="p_quantity"></input>
+							</div>
+							<div class="col-sm-2 product_price"><span class="cur">{{c_currency}}</span>
+								{{#ifCond p_price p_originalprice}}
+								<p>{{currency p_originalprice}}</p>{{currency p_price}}
+							{{else}}
+								{{currency p_price}}
+							{{/ifCond}}
+							</div>
+						</div>
+
+						<div class="row custom-row" class="options">
+							<ul class="option_links">
+								<li id="edit">EDIT</li> <span class="sepa">|</span>
+								<li id="remove">REMOVE</li><span class="sepa">|</span>
+								<li id="save">SAVE FOR LATER</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			{{/each}}
+		</script>
+			<!-- {{#each productsInCart}}
+				<div class="row custom-row">
+					<div class="col-sm-9 products" id="{{p_id}}">
 						<img src="images/{{p_id}}.jpg" class="p_image">
 						<div class="p_name">{{p_variation}} {{p_name}}</div>
 						<div class="p_style">Style #: {{uppercase p_style}}</div>
@@ -66,9 +94,9 @@
 					</div>
 				</div>
 				<hr class="sngl-line" />
-			{{/each}}
+			{{/each}} -->
 
-			</script>		
+			<!-- </script>		 -->
 		</div>
 		<hr class="dbl-line" />
 		<div id="calculations">
@@ -79,32 +107,32 @@
 				<p><a href="#">See return and exhance policy</a></p>
 			</aside>
 			<section>
-				<div class="row promo">
+				<div class="row custom-row promo">
 					<div class="col-sm-4"><p>ENTER PROMOTIONAL OR GIFT CODE</p></div>
 					<div class="col-sm-6"><input id="promocode" type="text" name="promocode"></input></div>
 					<div class="col-sm-2"><button id="apply" name="apply" value="apply">APPLY</button></div>
 				</div>
 				<hr class="dbl-line" />
-				<div class="row subtotal">
+				<div class="row custom-row subtotal">
 					<div class="col-sm-8"><p>SUBTOTAL</p></div>
 					<div class="col-sm-4 subtotal_amount"></div>
 				</div>
-				<div class="row _discount">
+				<div class="row custom-row _discount">
 					<div class="col-sm-8"><p>DISCOUNT</p></div>
 					<div class="col-sm-4 _discount_amount"></div>
 				</div>
-				<div class="row promo_applied">
+				<div class="row custom-row promo_applied">
 					<div class="col-sm-8"><p>PROMOTION CODE <span></span> APPLIED</p></div>
 					<div class="col-sm-4 promo_applied_amount">None</div>
 				</div>
 
-				<div class="row shipping">
+				<div class="row custom-row shipping">
 					<div class="col-sm-8"><p>ESTIMATED SHIPPING<sup>*</sup></p></div>
 					<div class="col-sm-4 shipping_amount"></div>
 				</div>
 
 				<hr class="sngl-line" />
-				<div class="row estimated_total">
+				<div class="row custom-row estimated_total">
 					<div class="col-sm-8"><span class="e_total">ESTIMATED TOTAL</span></div>
 					<div class="col-sm-4 estimated_total_amount"></div>
 				</div>
@@ -112,8 +140,21 @@
 				<hr class="dbl-line" />
 			</section>
 		</div>
-
 	</div>
+
+	<div id="overlay">
+    
+	</div>
+	<div id="editProduct">
+	    <div class="row custom-row">
+				<div class="col-md-6">
+					Product Detail Goes here.
+				</div>
+				<div class="col-md-6">
+					<img id="product_image" src="">
+				</div>
+	    </div>
+    </div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
 	<!-- <script src="js/bootstrap.js"></script> -->
