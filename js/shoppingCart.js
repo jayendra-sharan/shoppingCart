@@ -1,34 +1,18 @@
 var ShoppingCart = (function($) {
-
-	// XHR to load the JSON then store it into locastorage
-
-	// function getCartItems() {
-	// 	$.ajax({
-	// 		'url' : 'js/cart.json',
-	// 		'method' : 'POST',
-	// 		'dataType' : 'json',
-	// 		'success' : function(data){
-	// 			sessionStorage.setItem('cartItems', JSON.stringify(data));
-	// 		}
-	// 	});
-	// }
 	
 	function loadCart(products){
 		var source = $("#my-cart-template").html();
 		var template = Handlebars.compile(source);
 		$("#my-cart").append(template(products));
 
-		//calculation part goes here
 		var currency = products.productsInCart[0].c_currency;
 		var subTotalAmount = calculateSubTotal(products);
 		var discountAmount = subTotalAmount * calculateDiscount(products);
 		var pcv = calculatePromoCode();
-		// var promoCodeValue = isNaN(pcv) ? 0 : pcv;
 		var sa = calculateShipping();
-		// var shippingAmount = isNaN(sa) ? 0: sa;
-
 		var estimatedTotal = subTotalAmount - discountAmount - pcv + sa;
 
+		//display total price per item
 
 		//display calculated values here
 		$("#count").html(products.productsInCart.length);
@@ -44,17 +28,21 @@ var ShoppingCart = (function($) {
 	function calculateSubTotal(obj) {
 		var sum=0;
 		for (var i = 0; i < obj.productsInCart.length; i++) {
-			sum += parseInt(obj.productsInCart[i].p_price);
+			sum += parseInt(obj.productsInCart[i].p_total_price);
 		}
-	  return sum;
+		return sum;
 	}
 
 	//function to calcuate discount based on number of items in cart
 	
 	function calculateDiscount(obj){
-		var totalItems = obj.productsInCart.length;
+
+		var totalItems = 0;
+		for(var i=0; i< obj.productsInCart.length; i++) {
+			totalItems += +obj.productsInCart[i].p_quantity;
+		}
 		//if more than 10 items, give 25% discount
-		if (length >= 10 ) {
+		if (totalItems >= 10 ) {
 			return 0.25;
 		} 
 		//if more than 3 and less than 3 items, give 10% discount
@@ -97,14 +85,20 @@ var ShoppingCart = (function($) {
 	}
 
 	function init() {
-					// getCartItems();
 		var loadItems = sessionStorage.getItem('load');
 		if(loadItems == null) {
-			 $.when($.ajax({
+			$.when($.ajax({
 				'url' : 'js/cart.json',
 				'method' : 'POST',
 				'dataType' : 'json',
 				'success' : function(data){
+
+					for(var i=0; i < data.productsInCart.length; i++) {
+						data.productsInCart[i].p_total_price = (+data.productsInCart[i].p_quantity * +data.productsInCart[i].p_price);
+						data.productsInCart[i].p_total_originalprice = (+data.productsInCart[i].p_quantity * +data.productsInCart[i].p_originalprice);
+					}
+					// data.productsInCart
+					console.log(data.productsInCart);
 					sessionStorage.setItem('cartItems', JSON.stringify(data));
 				}
 			})).done(function(){
@@ -113,12 +107,7 @@ var ShoppingCart = (function($) {
 			});
 		}else{
 			reloadCart();
-		}
-		
-		
-		
-		
-		
+		}	
 	}
 
 	function removeItem(item) {
@@ -137,35 +126,39 @@ var ShoppingCart = (function($) {
 		
 	}
 
-	
-
-	function viewItemToEdit(item) {
-		OverlayModule.enableOverlay();
+	function findItem(item) {
 		var cart = sessionStorage.getItem('cartItems');
 		var prdcts = JSON.parse(cart);
 		for (var i = 0; i < prdcts.productsInCart.length; i++) {
 			if (prdcts.productsInCart[i].p_id == item) {
-				var div = document.getElementById("itemImage");
-				div.src = "images/"+item+".jpg";
+				return [prdcts.productsInCart[i], i];
+			}
+		}
+	}
 
-				var itemDetailDocFrag = document.createDocumentFragment();
+	function viewItemToEdit(item) {
+		OverlayModule.enableOverlay();
+		var viewProduct = findItem(item)[0];
+		var div = document.getElementById("itemImage");
+		div.src = "images/"+item+".jpg";
 
-				var itemFullName = prdcts.productsInCart[i].p_variation + " " + prdcts.productsInCart[i].p_name;
-				var itemCurrency = prdcts.productsInCart[i].c_currency;
-				var itemName = prdcts.productsInCart[i].p_name;
-				var itemMRPrice = prdcts.productsInCart[i].p_originalprice;
-				var itemPrice = prdcts.productsInCart[i].p_price;
-				var itemAvailSizes = prdcts.productsInCart[i].p_available_options.sizes;
-				var itemAvailColors = prdcts.productsInCart[i].p_available_options.colors;
 
-				$("#iFullName").html(itemFullName);	
-				$("#iCurrency").html(itemCurrency);
-				$("#iName").html(itemName);				
-				$("#iMRPrice").html(itemMRPrice);				
-				$("#iPrice").html(itemPrice);				
+		var itemFullName = viewProduct.p_variation + " " + viewProduct.p_name;
+		var itemCurrency = viewProduct.c_currency;
+		var itemName = viewProduct.p_name;
+		var itemMRPrice = viewProduct.p_originalprice;
+		var itemPrice = viewProduct.p_price;
+		var itemAvailSizes = viewProduct.p_available_options.sizes;
+		var itemAvailColors = viewProduct.p_available_options.colors;
+		$("#iId").attr("value", viewProduct.p_id);
+		$("#iFullName").html(itemFullName);	
+		$("#iCurrency").html(itemCurrency);
+		$("#iName").html(itemName);				
+		$("#iMRPrice").html(itemMRPrice);				
+		$("#iPrice").html(itemPrice);				
 
-				if (itemMRPrice === itemPrice) {
-					$("#iMRPrice").css("visibility", "hidden");
+		if (itemMRPrice === itemPrice) {
+			$("#iMRPrice").css("visibility", "hidden");
 					// $("#iMRPrice").css("width", "0px");
 					$("#iMRPrice").html("");
 				}
@@ -179,54 +172,51 @@ var ShoppingCart = (function($) {
 					$('#iSizeOption').append(new Option(itemAvailSizes[i].code.toUpperCase(), itemAvailSizes[i].name));
 					// $('ul#iSizeOption').append("<li class='sizeOps'>"+ itemAvailSizes[i].code.toUpperCase() +"</li>");
 				}
+				return;
 
-				// console.log(itemAvailColors.length);
+			}
 
+			function editItem(size, sizeName, qty) {
+				var selectedSize = {"name" : sizeName, "code" : size};
+				var selectedQty = qty;
+				var div = $("#iColorOption li.active");
+				var selectedItem = $("#iId").val();
+				var selectedColHexcode = $(div).attr("id");
+				var selectedColName = $(div).attr("title");
+				var newItem = findItem(selectedItem)[0];
+				var index = findItem(selectedItem)[1];
 
+				newItem.p_selected_color = {"name" : selectedColName, "hexcode": selectedColHexcode};
+				newItem.p_selected_size = selectedSize;
+				newItem.p_quantity = selectedQty;
+				newItem.p_total_price = +selectedQty * +newItem.p_price;
 
+				var cart = sessionStorage.getItem('cartItems');
+				var prdcts = JSON.parse(cart);
+				prdcts.productsInCart.splice(index, 1, newItem);
+				sessionStorage.setItem('cartItems', JSON.stringify(prdcts));
+				window.location.reload();
+			}
 
-					// console.log(prdcts.productsInCart[i].p_available_options.colors[2]);
-					// prdcts.productsInCart[i].p_selected_color = {"name":"green", "hexcode":"#A3D2A1"};
-					// var editedItem = prdcts.productsInCart[i];
-					// prdcts.productsInCart.splice(i, 1, editedItem);
-					// sessionStorage.setItem('cartItems', JSON.stringify(prdcts));
-					// // window.location.reload();
-					return;
-				}	
-			}	
-	}
+			return {
+				init : init,
+				removeItem: removeItem,
+				viewItemToEdit : viewItemToEdit,
+				editItem : editItem
 
-	function newColor(hc, c) {
-		var selectedColor = {"name": c, "hexcode": hc };
+			};
 
-	}
+		})(jQuery);
 
-	function newValues(size, sizeName) {
-		var selectedSize = {"name" : sizeName, "code" : size};
-		var 
+		var OverlayModule = (function() {
+			function enableOverlay() {
+				var el = document.getElementById("overlay");
+				var ed = document.getElementById("editProduct");
+				el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+				ed.style.display = (ed.style.display == "block") ? "none" : "block";
+			}
 
-	}
-
-	return {
-		init : init,
-		removeItem: removeItem,
-		viewItemToEdit : viewItemToEdit,
-		newColor : newColor,
-		newValues : newValues
-
-	};
-
-})(jQuery);
-
-var OverlayModule = (function() {
-	function enableOverlay() {
-		var el = document.getElementById("overlay");
-		var ed = document.getElementById("editProduct");
-		el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
-		ed.style.display = (ed.style.display == "block") ? "none" : "block";
-	}
-
-	return {
-		enableOverlay: enableOverlay
-	};
-})();
+			return {
+				enableOverlay: enableOverlay
+			};
+		})();

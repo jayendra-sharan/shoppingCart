@@ -24,9 +24,10 @@ $("#iColorOption").on("click", ".colorOps", function(event){
 	var tar = event.target;
 	$("#iColorOption li").css("border", "0");
 	$(tar).css("border", "1px solid #000000");
-	var selectedColHexcode = $(tar).attr("id");
-	var selectedColName = $(tar).attr("title");
-	ShoppingCart.newColor(selectedColHexcode, selectedColName);
+	$(tar).addClass("active");
+	// var selectedColHexcode = $(tar).attr("id");
+	// var selectedColName = $(tar).attr("title");
+	//ShoppingCart.newColor(selectedColHexcode, selectedColName);
 });
 
 $("#edit").on("click", function(event) {
@@ -34,7 +35,7 @@ $("#edit").on("click", function(event) {
 	var selectedSizeName = $( "#iSizeOption option:selected" ).attr("value");
 	var selectedQty = $( "#iQty option:selected" ).val();
 	// console.log(selectedSize+selectedSizeName);
-	ShoppingCart.newValues(selectedSize, selectedSizeName, selectedQty);
+	ShoppingCart.editItem(selectedSize, selectedSizeName, selectedQty);
 });
 
 $("#overlay").on("click", OverlayModule.enableOverlay);
