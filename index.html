@@ -14,10 +14,11 @@
 		<span class="heading"><h1>Your Shopping Bag</h1></span>
 		<span class="sngl-line"></span>
 		<div class="row custom-row product_header">
-			<div class="col-sm-9 count-items"><span id="count"></span> Items</div>
-			<div class="col-sm-1">Price</div>
-			<div class="col-sm-1">Qty</div>
-			<div class="col-sm-1">Size</div>
+			<div class="col-sm-6 count-items"><span id="count"></span> Items</div>
+			<div class="col-sm-2">Size</div>
+			<div class="col-sm-2">Qty</div>
+			<div class="col-sm-2">Price</div>
+			
 		</div>
 	</header>
 	
@@ -31,7 +32,7 @@
 					<img class="product_image" src="images/{{p_id}}.jpg">
 					<div id="product_detail">
 						<div class="row custom-row" id="detail_{{p_id}}">
-							<div class="col-sm-6 product_desc">
+							<div class="col-sm-3 product_desc">
 								<ul class="description">
 									<li class="name">{{p_variation}} {{p_name}}</li>
 									<li class="style">Style #: {{uppercase p_style}}</li>
@@ -39,25 +40,30 @@
 								</ul>
 							</div>
 							
+							<div class="col-sm-8 product_desc_detail">
+								<div class="row custom-row">
+									<!-- -->
+									<div class="col-sm-4 product_size">
+										<span class="size">Size: </span>{{uppercase p_selected_size.code}}
+									</div>
+									<div class="col-sm-4 product_qty">
+										<span class="qty">QTY: </span><input type="text" value="{{p_quantity}}" name="p_quantity"></input>
+									</div>
+									<div class="col-sm-4 product_price">
+										{{#ifCond p_price p_originalprice}}
+										<span class="dscnt"><span class="cur">{{c_currency}}</span>{{currency p_originalprice}}</span>
+										<span class="cur">{{c_currency}}</span>{{currency p_price}}
+									{{else}}
+										<span class="cur">{{c_currency}}</span>{{currency p_price}}
+									{{/ifCond}}
+									</div>
+									<!-- -->
+								</div>
+							</div>
+							<!-- -->
 							
-							<div class="col-sm-2 product_price">
-								{{#ifCond p_price p_originalprice}}
-								<span class="dscnt"><span class="cur">{{c_currency}}</span>{{currency p_originalprice}}</span>
-								<span class="cur">{{c_currency}}</span>{{currency p_price}}
-							{{else}}
-								<span class="cur">{{c_currency}}</span>{{currency p_price}}
-							{{/ifCond}}
-							</div>
-
-							<div class="col-sm-2 product_qty">
-								<span class="qty">QTY: </span><input type="text" value="{{p_quantity}}" name="p_quantity"></input>
-							</div>
-
-							<div class="col-sm-2 product_size">
-								<span class="size">Size: </span>{{uppercase p_selected_size.code}}
-							</div>
+							<!-- -->
 						</div>
-						<div class="dummy"></div>
 						<div class="row custom-row options">
 							<ul class="option_links">
 								<li class="edit">EDIT</li> <span class="sepa"> | </span>
@@ -83,39 +89,39 @@
 			</aside>
 			<section>
 				<div class="row custom-row promo">
-					<div class="col-sm-4"><p>ENTER PROMOTION CODE OR GIFT CODE</p></div>
+					<div class="col-sm-4 promo_inst"><p>ENTER PROMOTION CODE OR GIFT CODE</p></div>
 					<div class="col-sm-8 input_promo"><input id="promocode" type="text" name="promocode"></input> <button id="apply" name="apply" value="apply">APPLY</button></div>
 				</div>
 				<hr class="dbl-line" />
 				<div class="row custom-row subtotal">
 					<div class="col-sm-8 col-xs-8"><p>SUBTOTAL</p></div>
-					<div class="col-sm-4 col-xs-4"><span class="_cur"></span><span class="subtotal_amount"></span></div>
+					<div class="col-sm-4 col-xs-4 show_amount"><span class="_cur"></span><span class="subtotal_amount"></span></div>
 				</div>
 				<div class="row custom-row _discount">
 					<div class="col-sm-8 col-xs-8"><p>DISCOUNT</p></div>
-					<div class="col-sm-4 col-xs-4"><span class="_cur"></span><span class="_discount_amount"></span></div>
+					<div class="col-sm-4 col-xs-4 show_amount"><span class="_cur"></span><span class="_discount_amount"></span></div>
 				</div>
 				<div class="row custom-row promo_applied">
 					<div class="col-sm-8 col-xs-8"><p>PROMOTION CODE <span></span> APPLIED</p></div>
-					<div class="col-sm-4 col-xs-4"><span class="_cur"></span><span class="promo_applied_amount"></span></div>
+					<div class="col-sm-4 col-xs-4 show_amount"><span class="_cur"></span><span class="promo_applied_amount"></span></div>
 				</div>
 
 				<div class="row custom-row shipping">
 					<div class="col-sm-8 col-xs-8"><p>ESTIMATED SHIPPING<sup>*</sup></p></div>
-					<div class="col-sm-4 col-xs-4"><span class="_cur"></span><span class="shipping_amount"></span></div>
+					<div class="col-sm-4 col-xs-4 show_amount"><span class="_cur"></span><span class="shipping_amount"></span></div>
 				</div>
 
 				<div class="row custom-row estimated_total">
 				<span class="single-line"></span>
 					<div class="col-sm-8 col-xs-8"><p>ESTIMATED TOTAL</p><span class="total_message">Tax will be applied during checkout</span></span></div>
-					<div class="col-sm-4 col-xs-4"><span class="_cur"></span><span class="estimated_total_amount"></span></div>
+					<div class="col-sm-4 col-xs-4 show_amount"><span class="_cur"></span><span class="estimated_total_amount"></span></div>
 				</div>
 				<div class="custom-row checkout_options">
-					<button type="button" id="checkout_button" name="checkout">CHECKOUT</button>
+					<button type="button" id="checkout_button" name="checkout" class="sc-btn">CHECKOUT</button>
 
 					<p class="continue_shopping"><a href="#">CONTINUE SHOPPING</a></p>
 
-					<p class="checkout_message">Secure Checkout. Shopping is always safe &amp; secure. <span><img src="images/lock.jpg" /></span></p>
+					<p class="checkout_message"><span class="text">Secure Checkout. Shopping is always safe &amp; secure.</span><span class="image"><img src="images/lock.jpg" /></span></p>
 
 					<span class="single-line"></span>
 
@@ -130,14 +136,39 @@
 	</div>
 	<div id="editProduct">
 	    <div class="row custom-row">
-				<div class="col-md-6">
-					Product Detail Goes here.
+				<div class="col-sm-6" id="editProductImage">
+					<img id="itemImage" src="">
 				</div>
-				<div class="col-md-6">
-					<img id="product_image" src="">
+				<span class="dbl-line i-dbl-line"></span>
+
+				<div class="col-sm-6" id="editProductDetail">
+
+					<div id="iFullName"></div>
+					<div id="cost"><span id="iCurrency"></span><span id="iMRPrice"></span><span id="iPrice"></span></div>
+					<div id="iName"></div>
+					<div id="iColors"><ul id="iColorOption"></ul></div>
+					<div class="select-option">
+						<div id="iSizes">
+							<select id="iSizeOption">
+								<option selected="selected" value="SIZE">SIZE</option>
+							</select>
+						</div>
+						<div id="iQty">
+							<select id="iQTYOption">
+								<option selected="selected" value="0">QTY</option>
+								<option value="1">01</option>
+								<option value="2">02</option>
+								<option value="3">03</option>
+							</select>
+						</div>
+					</div>
+
+					<button id="edit" type="button" class="sc-btn" value="EDIT">EDIT</button>
+
 				</div>
-	    </div>
-    </div>
+				
+	    </div><!-- End of Edit Row -->
+    </div> <!-- End of Edit Product -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
 	<!-- <script src="js/bootstrap.js"></script> -->

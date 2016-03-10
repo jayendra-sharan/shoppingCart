@@ -139,14 +139,52 @@ var ShoppingCart = (function($) {
 
 	
 
-	function editItem(item) {
+	function viewItemToEdit(item) {
 		OverlayModule.enableOverlay();
 		var cart = sessionStorage.getItem('cartItems');
 		var prdcts = JSON.parse(cart);
 		for (var i = 0; i < prdcts.productsInCart.length; i++) {
 			if (prdcts.productsInCart[i].p_id == item) {
-				var div = document.getElementById("product_image");
+				var div = document.getElementById("itemImage");
 				div.src = "images/"+item+".jpg";
+
+				var itemDetailDocFrag = document.createDocumentFragment();
+
+				var itemFullName = prdcts.productsInCart[i].p_variation + " " + prdcts.productsInCart[i].p_name;
+				var itemCurrency = prdcts.productsInCart[i].c_currency;
+				var itemName = prdcts.productsInCart[i].p_name;
+				var itemMRPrice = prdcts.productsInCart[i].p_originalprice;
+				var itemPrice = prdcts.productsInCart[i].p_price;
+				var itemAvailSizes = prdcts.productsInCart[i].p_available_options.sizes;
+				var itemAvailColors = prdcts.productsInCart[i].p_available_options.colors;
+
+				$("#iFullName").html(itemFullName);	
+				$("#iCurrency").html(itemCurrency);
+				$("#iName").html(itemName);				
+				$("#iMRPrice").html(itemMRPrice);				
+				$("#iPrice").html(itemPrice);				
+
+				if (itemMRPrice === itemPrice) {
+					$("#iMRPrice").css("visibility", "hidden");
+					// $("#iMRPrice").css("width", "0px");
+					$("#iMRPrice").html("");
+				}
+
+				for (var i=0; i < itemAvailColors.length; i++){
+					// console.log(itemAvailColors[i].name);
+					$('ul#iColorOption').append("<li id='"+itemAvailColors[i].hexcode+"' class='colorOps' style = 'background-color:"+itemAvailColors[i].hexcode+"' title='"+itemAvailColors[i].name+"'></li>");
+				}
+				for (var i=0; i < itemAvailSizes.length; i++){
+					// console.log(itemAvailSizes[i].name);
+					$('#iSizeOption').append(new Option(itemAvailSizes[i].code.toUpperCase(), itemAvailSizes[i].name));
+					// $('ul#iSizeOption').append("<li class='sizeOps'>"+ itemAvailSizes[i].code.toUpperCase() +"</li>");
+				}
+
+				// console.log(itemAvailColors.length);
+
+
+
+
 					// console.log(prdcts.productsInCart[i].p_available_options.colors[2]);
 					// prdcts.productsInCart[i].p_selected_color = {"name":"green", "hexcode":"#A3D2A1"};
 					// var editedItem = prdcts.productsInCart[i];
@@ -155,13 +193,27 @@ var ShoppingCart = (function($) {
 					// // window.location.reload();
 					return;
 				}	
-	}	}
+			}	
+	}
+
+	function newColor(hc, c) {
+		var selectedColor = {"name": c, "hexcode": hc };
+
+	}
+
+	function newValues(size, sizeName) {
+		var selectedSize = {"name" : sizeName, "code" : size};
+		var 
+
+	}
 
 	return {
 		init : init,
 		removeItem: removeItem,
-		editItem : editItem
-		
+		viewItemToEdit : viewItemToEdit,
+		newColor : newColor,
+		newValues : newValues
+
 	};
 
 })(jQuery);

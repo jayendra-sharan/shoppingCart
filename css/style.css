@@ -63,6 +63,10 @@ ul.option_links {
     margin-bottom: 20px;
 }
 
+ul.option_links li:hover {
+	cursor: pointer;
+}
+
 .option_links li {
     list-style: none;
     display: inline;
@@ -86,8 +90,8 @@ span.total_message {
     top: -25px;
 }
 
-button#checkout_button {
-    width: 250px;
+button.sc-btn {
+    width: 200px;
     height: 50px;
     background-color: #0000FF;
     border: 0;
@@ -96,12 +100,68 @@ button#checkout_button {
     font-weight: bold;
     line-height: 50px;
 }
+button.sc-btn:hover {
+	cursor: pointer;
+}
 
-.dummy {
-    width: 150px;
+.show_amount {
+    text-align: right;
+	}
+
+li.colorOps {
+    display: inline-block;
+    margin-right: 10px;
+    margin-left: 10px;
+    width: 20px;
     height: 20px;
-    float: left;
-    background-color: black;
+}
+ul#iSizeOption {
+    width: 30px;
+}
+span.dbl-line.i-dbl-line {
+    width: 50%;
+    left: 50%;
+    margin-left: -25%;
+    margin-top: 20px;
+}
+#iFullName {
+    margin-top: 20px;
+    font-size: 24px;
+    text-transform: uppercase;
+    /* margin-bottom: 5px; */
+    /* font-weight: bold; */
+    color: #777777;
+}
+#iPrice {
+    font-size: 50px;
+}
+
+span#iCurrency {
+    position: relative;
+    top: -15px;
+    font-size: 24px;
+}
+
+#iName {
+    font-size: 22px;
+    text-transform: uppercase;
+    color: #777777;
+}
+
+div#iColors {
+    margin-top: 10px;
+}
+
+.select-option {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+div#iSizes {
+    margin-right: 10px;
+}
+div#iQty {
+    margin-left: 10px;
 }
 
 @media (min-width: 320px){
@@ -133,7 +193,7 @@ button#checkout_button {
     padding-right: 25px;
     line-height: 2.5;
 	}
-	.row.product_header > .col-sm-1 {
+	.row.product_header > .col-sm-2 {
 		display: none;
 	}
 	.page {
@@ -145,7 +205,7 @@ button#checkout_button {
 	}
 	img.product_image {
     float: left;
-    height: 150px;
+    height: 160px;
     width: 150px;
     display: block;
     margin-left: 10px;
@@ -187,10 +247,6 @@ button#checkout_button {
     opacity: 0.5;
 	}
 
-    .dummy {
-        display: none;
-    }
-
 	aside.instructions {
     display: none;
 	}
@@ -228,15 +284,18 @@ button#checkout_button {
 	}
 
 	p.checkout_message {
-    margin-top: 30px;
+    /* margin-bottom: 50px; */
     padding-right: 45px;
     padding-left: 45px;
     font-size: 18px;
+    margin-top: 20px;
 	}
-	.checkout_message span {
-		display: block;
-		margin-top: 10px;
-		margin-bottom: 20px;
+	.checkout_message .image {
+    display: block;
+    /* margin-top: 10px; */
+    margin-bottom: 20px;
+    position: relative;
+    /* bottom: -100px; */
 	}
 	.continue_shopping {
 		margin-top: 30px;
@@ -256,7 +315,7 @@ button#checkout_button {
 
 /*For devices with viewport wider than 768px*/
 
-@media (min-width: 700px){
+@media (min-width: 768px){
     .masthead {
         height: 100px;
         padding-left: 0px;
@@ -264,25 +323,27 @@ button#checkout_button {
 	span.sngl-line {
 		display: block;
 	}
-	.row.product_header > .col-sm-1 {
+	/*.row.product_header > .col-sm-1 {
 		display: inline-block;
 		float: right;
 		height: 20px;
 		width: 40px;
 		margin-right: 30px;
-	}
+	}*/
 	.row.product_header {
         width: 100%;
         float: none;
 	}
+	.row.product_header > .col-sm-2 {
+		display: block;
+		text-align: center;
+		padding-left: 70px;
+	}
 	.count-items {
         text-align: left;
-        /* padding-right: 0px; */
         height: 20px;
         line-height: 20px;
-        /* position: absolute; */
         float: left;
-        /* display: block; */
     }
     .heading {
         display: block;
@@ -294,19 +355,44 @@ button#checkout_button {
     span.size,
     span.qty {
         display: none;
-    }    
-    .col-sm-2.product_size,
+    }  
+
+    #product_detail {
+	    position: relative;
+	    display: block;
+	    margin-left: 160px;
+		}
+		.product_desc_detail {
+			position: absolute;
+			right: 0px;
+		}
+		.col-sm-4.product_size {
+        padding-top: 15px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .product_size,
+		.product_qty,
+		.product_price {
+			text-align: right;
+		}
+  /*.col-sm-2.product_size,
     .col-sm-2.product_qty,
     .col-sm-2.product_price {
-        float: right;
+        float: left;
         width: 40px;
         margin-right: 25px;
     }
 
     .col-sm-6.product_desc {
         float: left;
+        margin-right: 50px;
     }
 
+    .col-sm-6.product_desc_detail {
+	    display: flex;
+	    justify-content: flex-end;
+		}
     .col-sm-2.product_size {
         padding-top: 15px;
         font-size: 16px;
@@ -314,20 +400,87 @@ button#checkout_button {
     }
     .col-sm-2.product_price {
         margin-right: 30px;
-    }
-    .dummy {
-        display: block;
-        visibility: hidden;
-    }
+    }*/
+    
+
+
+
+
     ul.option_links {
         text-align: left;
-        text-indent: 50px;
+        text-indent: 20px;
         position: relative;
         top: -50px
     }
     .row.custom-row.options {
         height: 20px;
     }
+    aside.instructions {
+	   	display: block;
+	    float: left;
+	    width: 30%;
+	    position: relative;
+	    padding: 50px 25px;
+		}
+    section {
+    	display: block;
+    	float: right;
+    	width: 70%;
+    	position: relative;
+  	}
+  	.instructions > p {
+    	margin-bottom: 20px;
+		}
+	.row.custom-row.promo {
+  	  margin-top: 50px;
+	}
+
+	.input_promo {
+    text-align: right;
+    padding-left: 0px;
+    width: 60%;
+}
+	.col-sm-4.promo_inst {
+    width: 40%;
+    padding-right: 0px;
+	}
+
+	.promo_inst > p {
+    padding: 0px;
+    font-size: 18px;
+    text-align: left;
+    width: 90%;
+    float: left;
+	}
+	
+	
+	.col-sm-8.col-xs-8 > p {
+    font-size: 16px;
+	}
+	.custom-row.checkout_options {
+    text-align: right;
+    padding-right: 20px;
+	}
+	p.continue_shopping {
+    float: left;
+    top: -20px;
+    position: relative;
+	}
+	span.text {
+    float: right;
+	}
+	p.checkout_message {
+    margin-top: 20px;
+    margin-bottom: 20px;
+	}
+	span.dbl-line.i-dbl-line {
+		margin-left: 0px;
+	}
+	div#editProductImage {
+    position: relative;
+    display: block;
+    top: 80px;
+	}
 }
 
 #overlay{
@@ -345,7 +498,7 @@ button#checkout_button {
     width:80%;
     background-color: #fff;
     border:1px solid #000;
-    padding:15px;
+    padding:25px;
     text-align:center;
     z-index: 12;
     position: fixed;
