@@ -4,7 +4,7 @@
 
 ShoppingCart.init();
 
-$("#my-cart").on("click", "#remove", function(event){
+$("#my-cart").on("click", ".remove", function(event){
 	var tar = event.target;
 	var par = $(tar).parents(".product");
 	var itemToBeRemoved = par.attr("id");
@@ -12,9 +12,9 @@ $("#my-cart").on("click", "#remove", function(event){
 	
 });
 
-$("#my-cart").on("click", "#edit", function(event){
+$("#my-cart").on("click", ".edit", function(event){
 	var tar = event.target;
-	var par = $(tar).parents(".col-sm-9");
+	var par = $(tar).parents(".product");
 	var itemToBeEdited = par.attr("id");
 	ShoppingCart.editItem(itemToBeEdited);
 	

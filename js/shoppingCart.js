@@ -19,24 +19,26 @@ var ShoppingCart = (function($) {
 		$("#my-cart").append(template(products));
 
 		//calculation part goes here
-
+		var currency = products.productsInCart[0].c_currency;
 		var subTotalAmount = calculateSubTotal(products);
 		var discountAmount = subTotalAmount * calculateDiscount(products);
 		var pcv = calculatePromoCode();
-		var promoCodeValue = isNaN(pcv) ? 0 : pcv;
+		// var promoCodeValue = isNaN(pcv) ? 0 : pcv;
 		var sa = calculateShipping();
-		var shippingAmount = isNaN(sa) ? 0: sa;
+		// var shippingAmount = isNaN(sa) ? 0: sa;
 
-		var estimatedTotal = subTotalAmount - discountAmount - promoCodeValue + shippingAmount;
+		var estimatedTotal = subTotalAmount - discountAmount - pcv + sa;
 
 
 		//display calculated values here
 		$("#count").html(products.productsInCart.length);
+		$("._cur").html(currency);
 		$(".subtotal_amount").html(displayCurrency(subTotalAmount));
-		$("._discount_amount").html('-'+displayCurrency(discountAmount));
-		// $(".promo_applied_amount").html(displayCurrency(pcv));
+		$("._discount_amount").html(displayCurrency(discountAmount));
+		$(".promo_applied_amount").html(displayCurrency(pcv));
 		$(".shipping_amount").html(displayCurrency(sa));
 		$(".estimated_total_amount").html(displayCurrency(estimatedTotal));
+		$("#e_o_l").prev().css("display", "none");;
 	}
 
 	function calculateSubTotal(obj) {
@@ -68,13 +70,13 @@ var ShoppingCart = (function($) {
 	//function to calculate the discount based on the promocode applied
 
 	function calculatePromoCode() {
-		return "None";
+		return 0;
 	}
 
 	//function to calculate the shipping charge based on the total cart value
 
 	function calculateShipping() {
-		return "Free";
+		return 0;
 	}
 
 	//function to display currence in $11.11 format
@@ -84,7 +86,7 @@ var ShoppingCart = (function($) {
 			return cur;
 		}else {
 			// return '<span class="dollar_sign">$</span>'+('0'+cur.toFixed(2)).slice(-5);
-			return cur;
+			return ('0'+cur.toFixed(2)).slice(-5);
 		}
 	}
 
