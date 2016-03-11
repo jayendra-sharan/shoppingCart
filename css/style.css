@@ -134,7 +134,8 @@ span.dbl-line.i-dbl-line {
   text-transform: uppercase;
   color: #777777;
 }
-#iPrice {
+#iPrice,
+#iMRPrice {
   font-size: 50px;
 }
 span#iCurrency {
@@ -238,7 +239,8 @@ div#iQty {
     padding-right: 0px;
     font-size: 24px;
   }
-  span.dscnt {
+  span.dscnt,
+  #iMRPrice {
     text-decoration: line-through;
     opacity: 0.5;
   }

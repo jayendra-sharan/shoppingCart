@@ -18,12 +18,9 @@
 			<div class="col-sm-2">Size</div>
 			<div class="col-sm-2">Qty</div>
 			<div class="col-sm-2">Price</div>
-			
 		</div>
 	</header>
-	
 	<span class="dbl-line"></span>
-
 	<div class="page">
 		<div id="my-cart">
 			<script id="my-cart-template" type="text/x-handlebars-template">
@@ -39,10 +36,8 @@
 									<li class="color">Colour: {{p_selected_color.name}}</li>
 								</ul>
 							</div>
-							
 							<div class="col-sm-8 product_desc_detail">
 								<div class="row custom-row">
-									<!-- -->
 									<div class="col-sm-4 product_size">
 										<span class="size">Size: </span>{{uppercase p_selected_size.code}}
 									</div>
@@ -57,12 +52,8 @@
 										<span class="cur">{{c_currency}}</span>{{currency p_total_price}}
 										{{/ifCond}}
 									</div>
-									<!-- -->
 								</div>
 							</div>
-							<!-- -->
-							
-							<!-- -->
 						</div>
 						<div class="row custom-row options">
 							<ul class="option_links">
@@ -77,7 +68,7 @@
 				{{/each}}
 				<span id="e_o_l"></span>
 			</script>
-			
+			<!-- End of Template -->
 		</div>
 		<span class="dbl-line"></span>
 		<div id="calculations">
@@ -130,17 +121,13 @@
 			</section>
 		</div>
 	</div>
-
-	<div id="overlay">
-		
-	</div>
+	<div id="overlay"></div>
 	<div id="editProduct">
 		<div class="row custom-row">
 			<div class="col-sm-6" id="editProductImage">
 				<img id="itemImage" src="">
 			</div>
 			<span class="dbl-line i-dbl-line"></span>
-
 			<div class="col-sm-6" id="editProductDetail">
 				<input type="hidden" id="iId" value=""></input>
 				<div id="iFullName"></div>
@@ -162,21 +149,15 @@
 						</select>
 					</div>
 				</div>
-
 				<button id="edit" type="button" class="sc-btn" value="EDIT">EDIT</button>
-
 			</div>
-			
-		</div><!-- End of Edit Row -->
-	</div> <!-- End of Edit Product -->
+		</div>
+	</div> 
+	<!-- End of Edit Product -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
-	<!-- <script src="js/bootstrap.js"></script> -->
 	<script src="js/custom_handles.js"></script>
 	<script src="js/shoppingCart.js"></script>
 	<script src="js/script.js"></script>
-	
-	<!-- <script src="js/ajax_script.js"></script> -->
-	
 </body>
 </html>
