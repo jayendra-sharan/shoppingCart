@@ -6,7 +6,7 @@ ShoppingCart.init();
 
 
 /*
-*	Handles the click when remove link is clicked for any product.
+* Handles the click when remove link is clicked for any product.
 * Also calls the removeItem function of ShoppingCart Module.
 */
 $("#my-cart").on("click", ".remove", function(event){
